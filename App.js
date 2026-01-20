@@ -1,20 +1,16 @@
-import 'react-native-gesture-handler';
+import 'react-native-gesture-handler'; // MUSI BYĆ PIERWSZY!
 import React from 'react';
-import {View, StyleSheet} from 'react-native';
-import LoginScreen from './src/screens/LoginScreen';
+import {NavigationContainer} from '@react-navigation/native';
+import {StatusBar} from 'react-native';
+import AppNavigator from './src/navigation/AppNavigator';
 
 const App = () => {
   return (
-    <View style={styles.container}>
-      <LoginScreen />
-    </View>
+    <NavigationContainer>
+      <StatusBar barStyle="dark-content" />
+      <AppNavigator />
+    </NavigationContainer>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-});
 
 export default App;
