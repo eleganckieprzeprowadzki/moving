@@ -1,41 +1,21 @@
-{
-  "name": "MovingMarketplace",
-  "displayName": "Giełda Zleceń",
-  "expo": {
-    "name": "MovingMarketplace",
-    "slug": "moving-marketplace",
-    "version": "1.0.0",
-    "orientation": "portrait",
-    "icon": "./assets/icon.png",
-    "userInterfaceStyle": "light",
-    "splash": {
-      "image": "./assets/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
-    },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
-    "ios": {
-      "supportsTablet": true,
-      "bundleIdentifier": "com.movingmarketplace.app"
-    },
-    "android": {
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
-      },
-      "package": "com.movingmarketplace.app",
-      "permissions": [
-        "ACCESS_FINE_LOCATION",
-        "ACCESS_COARSE_LOCATION",
-        "CAMERA",
-        "READ_EXTERNAL_STORAGE",
-        "WRITE_EXTERNAL_STORAGE"
-      ]
-    },
-    "web": {
-      "favicon": "./assets/favicon.png"
-    }
-  }
-}
+/**
+ * Moving Marketplace Mobile App
+ * Główny komponent aplikacji
+ */
+
+import 'react-native-gesture-handler'; // DODAJ TO NA SAMYM POCZĄTKU!
+import React from 'react';
+import {NavigationContainer} from '@react-navigation/native';
+import {StatusBar} from 'react-native';
+import AppNavigator from './src/navigation/AppNavigator';
+
+const App = () => {
+  return (
+    <NavigationContainer>
+      <StatusBar barStyle="dark-content" />
+      <AppNavigator />
+    </NavigationContainer>
+  );
+};
+
+export default App;
