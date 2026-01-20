@@ -37,8 +37,11 @@ const LoginScreen = ({navigation}) => {
       if (response.success) {
         await saveAuthToken(response.token);
         await saveUserData(response.user);
-        // Nawigacja zostanie obsłużona przez AppNavigator
-        navigation.replace('MainTabs');
+        // Przekieruj do głównej aplikacji
+        navigation.reset({
+          index: 0,
+          routes: [{name: 'MainTabs'}],
+        });
       }
     } catch (error) {
       Alert.alert(
