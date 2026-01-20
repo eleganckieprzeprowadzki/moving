@@ -24,10 +24,27 @@ const Tab = createBottomTabNavigator();
  */
 const MainTabs = () => {
   return (
-    <Tab.Navigator>
-      <Tab.Screen name="Marketplace" component={MarketplaceScreen} />
-      <Tab.Screen name="MyOffers" component={MyOffersScreen} />
-      <Tab.Screen name="Profile" component={ProfileScreen} />
+    <Tab.Navigator
+      screenOptions={{
+        tabBarActiveTintColor: '#ff0000',
+        tabBarInactiveTintColor: '#666666',
+        headerShown: false,
+      }}>
+      <Tab.Screen 
+        name="Marketplace" 
+        component={MarketplaceScreen}
+        options={{title: 'Giełda'}}
+      />
+      <Tab.Screen 
+        name="MyOffers" 
+        component={MyOffersScreen}
+        options={{title: 'Moje Oferty'}}
+      />
+      <Tab.Screen 
+        name="Profile" 
+        component={ProfileScreen}
+        options={{title: 'Profil'}}
+      />
     </Tab.Navigator>
   );
 };
@@ -41,6 +58,11 @@ const AppNavigator = () => {
 
   useEffect(() => {
     checkAuth();
+    // Sprawdzaj co sekundę czy użytkownik się zalogował (dla aktualizacji po logowaniu)
+    const interval = setInterval(() => {
+      checkAuth();
+    }, 1000);
+    return () => clearInterval(interval);
   }, []);
 
   const checkAuth = async () => {
@@ -56,7 +78,6 @@ const AppNavigator = () => {
   };
 
   if (isLoading) {
-    // Można tutaj dodać ekran ładowania
     return null;
   }
 
@@ -65,9 +86,21 @@ const AppNavigator = () => {
       {isAuthenticated ? (
         <>
           <Stack.Screen name="MainTabs" component={MainTabs} />
-          <Stack.Screen name="OrderDetails" component={OrderDetailsScreen} />
-          <Stack.Screen name="OfferForm" component={OfferFormScreen} />
-          <Stack.Screen name="Stats" component={StatsScreen} />
+          <Stack.Screen 
+            name="OrderDetails" 
+            component={OrderDetailsScreen}
+            options={{headerShown: true, title: 'Szczegóły zamówienia'}}
+          />
+          <Stack.Screen 
+            name="OfferForm" 
+            component={OfferFormScreen}
+            options={{headerShown: true, title: 'Złóż ofertę'}}
+          />
+          <Stack.Screen 
+            name="Stats" 
+            component={StatsScreen}
+            options={{headerShown: true, title: 'Statystyki'}}
+          />
         </>
       ) : (
         <Stack.Screen name="Auth" component={AuthNavigator} />
