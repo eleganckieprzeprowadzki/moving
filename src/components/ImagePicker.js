@@ -1,5 +1,5 @@
 /**
- * Komponent wyboru zdjęć
+ * Komponent wyboru zdjęć - wersja Expo
  */
 
 import React from 'react';
@@ -11,42 +11,48 @@ import {
   StyleSheet,
   Alert,
 } from 'react-native';
-import {launchImageLibrary, launchCamera} from 'react-native-image-picker';
+import * as ImagePicker from 'expo-image-picker';
 
-const ImagePicker = ({images, onImagesChange}) => {
+const ImagePickerComponent = ({images, onImagesChange}) => {
   const handleChooseImage = () => {
     Alert.alert('Wybierz źródło', '', [
       {text: 'Anuluj', style: 'cancel'},
       {
         text: 'Kamera',
-        onPress: () => {
-          launchCamera(
-            {
-              mediaType: 'photo',
-              quality: 0.8,
-            },
-            response => {
-              if (response.assets && response.assets[0]) {
-                onImagesChange([...images, {uri: response.assets[0].uri}]);
-              }
-            },
-          );
+        onPress: async () => {
+          const {status} = await ImagePicker.requestCameraPermissionsAsync();
+          if (status !== 'granted') {
+            Alert.alert('Brak uprawnień', 'Potrzebne są uprawnienia do kamery');
+            return;
+          }
+          const result = await ImagePicker.launchCameraAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.Images,
+            allowsEditing: true,
+            aspect: [4, 3],
+            quality: 0.8,
+          });
+          if (!result.canceled && result.assets[0]) {
+            onImagesChange([...images, {uri: result.assets[0].uri}]);
+          }
         },
       },
       {
         text: 'Galeria',
-        onPress: () => {
-          launchImageLibrary(
-            {
-              mediaType: 'photo',
-              quality: 0.8,
-            },
-            response => {
-              if (response.assets && response.assets[0]) {
-                onImagesChange([...images, {uri: response.assets[0].uri}]);
-              }
-            },
-          );
+        onPress: async () => {
+          const {status} = await ImagePicker.requestMediaLibraryPermissionsAsync();
+          if (status !== 'granted') {
+            Alert.alert('Brak uprawnień', 'Potrzebne są uprawnienia do galerii');
+            return;
+          }
+          const result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.Images,
+            allowsEditing: true,
+            aspect: [4, 3],
+            quality: 0.8,
+          });
+          if (!result.canceled && result.assets[0]) {
+            onImagesChange([...images, {uri: result.assets[0].uri}]);
+          }
         },
       },
     ]);
@@ -128,4 +134,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ImagePicker;
+export default ImagePickerComponent;
